@@ -1,0 +1,2 @@
+import {flexStyle} from './common';
+
