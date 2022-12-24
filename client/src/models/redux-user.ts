@@ -9,9 +9,16 @@ export interface UserBaseModel {
     location?: string | null | undefined,
 }
 
-export interface UserSignUpModel {
-    statusCode: string | number | null,
-    status: boolean | null
+export interface UserSignUpPayLoad extends Omit<UserBaseModel, 'displayName' | 'phoneNumber' | 'alternatePhoneNumber' | 'location'> {
 }
 
-export interface UserSignInModel extends UserSignUpModel {}
+export interface UserSignInPayLoad extends Omit<UserSignUpPayLoad, 'firstName' | 'lastName'> {
+}
+
+export interface UserStateModel {
+    statusCode?: string | number | null,
+    isLoggedIn?: boolean | null,
+    isLoading?: boolean | null,
+    isRegisterationSuccess?: boolean | null,
+    isLoginSuccess?: boolean | null,
+}

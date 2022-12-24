@@ -2,8 +2,9 @@ import {useEffect} from "react";
 import {useAppDispatch, useAppSelector} from "../hooks/redux-hooks";
 import {signInAction} from "../store/actions/auth-action"
 import CustomForm from "../components/CustomForm";
-
+import LoaderHOC from "../components/Loader/Loader"
 const Signin = (props: any) => {
+    const {setLoading} = props;
     const formValue = {
         email: {
             value: "",
@@ -21,18 +22,16 @@ const Signin = (props: any) => {
         },
     };
     const dispatch = useAppDispatch();
-    const loginStore = useAppSelector(state => state);
+    const {isLoading} = useAppSelector(state => state?.userData);
     const signinSubmitHandler = (event:any,finalFormDataValues:any) => {
-        debugger;
-        console.log("finalFormDataValues: ", finalFormDataValues);
         dispatch(signInAction(
             {...finalFormDataValues}
         ))
     }
 
     useEffect(() => {
-        console.log("loginStore: ", loginStore);
-    },[loginStore])
+        setLoading(isLoading)
+    },[isLoading])
     return (
         <CustomForm
             formStateData={formValue}
@@ -45,4 +44,4 @@ const Signin = (props: any) => {
     );
 };
 
-export default Signin;
+export default LoaderHOC(Signin);

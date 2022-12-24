@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Grid from "@mui/material/Grid";
@@ -10,26 +10,27 @@ import {
     FormValueForSignup,
     FieldType,
 } from "../models/form-model";
+import React from "react";
+import { isDisabled } from "@testing-library/user-event/dist/utils";
 
 const CustomForm = (props: any) => {
+    const submitBtnRef = useRef<any>();
     const {
         formStateData = {},
         formGridColumnType = 1,
         formHeader,
-        formClassName="",
-        formStyle={},
-        onSubmit = (event:any, formValues:any) => {},
+        formClassName = "",
+        formStyle = {},
+        onSubmit = (event: any, formValues: any) => {},
         submitBtnText = "Sumbit",
         submitBtnStyle = {},
         submitBtnClassName = "",
-        sx={}
-
+        sx = {},
     } = props;
     const [formValues, setFormValues] = useState<
         FormValueForEdit | FormValueForSignin | FormValueForSignup
     >(formStateData);
     const onChangeHandler = (event: any) => {
-        debugger;
         const { value, name } = event.target;
         const key = name as string;
         let error = false;
@@ -52,24 +53,41 @@ const CustomForm = (props: any) => {
                 },
             })
         );
-        console.log(`${name}: ${value}`);
+    };
+
+    const enableOrDisableSubmitBtnUsingRef = (
+        refAttr: any,
+        isDisabled: boolean
+    ) => {
+        if(isDisabled) {
+            refAttr?.setAttribute("disabled", isDisabled);
+            refAttr?.classList.add("Mui-disabled");
+        } else {
+            refAttr.removeAttribute("disabled");
+            refAttr?.classList.remove("Mui-disabled");
+        }
     };
 
     const profileOnSubmitHandler = (event: any) => {
-        debugger;
         event.preventDefault();
+        enableOrDisableSubmitBtnUsingRef(
+            submitBtnRef?.current?.firstChild,
+            true
+        );
         function constructFormValues() {
-            let finalFormValue = {}
-            if(isRequiredInputFieldsAreValid) {
+            let finalFormValue = {};
+            if (isRequiredInputFieldsAreValid) {
                 return false;
             }
-            Object.keys(formValues).forEach((value:string, index, arr:any) => {
-                const key = value as string;
-                finalFormValue = {
-                    ...finalFormValue,
-                    [key]:formValues[key]?.value
+            Object.keys(formValues).forEach(
+                (value: string, index, arr: any) => {
+                    const key = value as string;
+                    finalFormValue = {
+                        ...finalFormValue,
+                        [key]: formValues[key]?.value,
+                    };
                 }
-            });
+            );
             return finalFormValue;
         }
         onSubmit(event, constructFormValues());
@@ -88,9 +106,17 @@ const CustomForm = (props: any) => {
                     inputElement?.errorEmailType)
             ) {
                 isDisabledFinalValue = true;
+                enableOrDisableSubmitBtnUsingRef(
+                    submitBtnRef?.current?.firstChild,
+                    true
+                );
                 break;
             } else {
                 isDisabledFinalValue = false;
+                enableOrDisableSubmitBtnUsingRef(
+                    submitBtnRef?.current?.firstChild,
+                    false
+                );
             }
         }
         return isDisabledFinalValue;
@@ -112,11 +138,22 @@ const CustomForm = (props: any) => {
                         display: "flex",
                         justifyContent: "space-between",
                         alignItems: "center",
-                        ...sx
+                        ...sx,
                     }}
-                    style={{ padding: "30px", height: "calc(100vh - 228px)",...formStyle }}
+                    style={{
+                        padding: "30px",
+                        height: "calc(100vh - 228px)",
+                        ...formStyle,
+                    }}
                 >
-                    {formHeader && <Box component="div" sx={formHeader?.sx && {...formHeader.sx}}>{formHeader?.title}</Box>}
+                    {formHeader && (
+                        <Box
+                            component="div"
+                            sx={formHeader?.sx && { ...formHeader.sx }}
+                        >
+                            {formHeader?.title}
+                        </Box>
+                    )}
                     <Grid container spacing={2}>
                         {Object.keys(formValues).map((fieldName) => {
                             const fieldNameObj =
@@ -148,14 +185,14 @@ const CustomForm = (props: any) => {
                             );
                         })}
                     </Grid>
-                    <Box>
+                    <Box ref={submitBtnRef}>
                         <Button
                             type="submit"
                             variant="outlined"
                             color="primary"
                             endIcon={<KeyboardArrowRight />}
                             disabled={isRequiredInputFieldsAreValid}
-                            style={{...submitBtnStyle}}
+                            style={{ ...submitBtnStyle }}
                             className={submitBtnClassName}
                         >
                             {submitBtnText}

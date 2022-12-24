@@ -6,8 +6,7 @@ import "./App.css";
 import MainRoute from "./router";
 import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
-import { useAppSelector } from "./hooks/redux-hooks";
-import PopupErrorMessage from "./components/Popup/PopupErrorMessage";
+import GlobalErrorhandler from "./components/Error/GlobalErrorHandler";
 
 const mainTopHeaderPreload = import("./components/MainTopHeader");
 const leftNamPreload = import("./components/LeftNav");
@@ -35,19 +34,12 @@ const MainSectionGrid = styled(MainRoute)({
 function App(props: any) {
     const drawerWidth: number = 290;
     const location = useLocation();
-    const messageData = useAppSelector(state => state?.messageData);
     const pathList = ["/login", "/signup"];
     const pathName = pathList.includes(location.pathname);
     return (
         <div className="App">
             <RootContainer sx={{ display: "flex" }}>
-                {
-                    (messageData && (messageData?.errors || messageData?.message))
-                    &&
-                    <PopupErrorMessage
-                    messageData={messageData}
-                    />
-                }
+                <GlobalErrorhandler />
                 {!pathName && (
                     <>
                         <React.Suspense>

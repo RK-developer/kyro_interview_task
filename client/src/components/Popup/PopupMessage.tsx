@@ -6,6 +6,7 @@ const PopupMessage = (props: any) => {
     const {
         alertType = "error",
         alertTitle = "Error",
+        sx={},
         errorMessage = (
             <>
                 This is an error alert — <strong>check it out!</strong>
@@ -25,6 +26,8 @@ const PopupMessage = (props: any) => {
                     transform: "translateX(-50%)",
                     width: "526px",
                     boxShadow: "1px 1px 8px 1px #ecc8c8",
+                    zIndex: 9999,
+                    ...sx
                 }}
             >
                 <AlertTitle>{alertTitle}</AlertTitle>

@@ -1,4 +1,4 @@
-import { Children } from "react";
+import React,{ Children } from "react";
 import PopupMessage from "./PopupMessage";
 import { useAppDispatch } from "../../hooks/redux-hooks";
 import { clearStatusMessage } from "../../store/slices/generic-response-slice";
@@ -29,7 +29,7 @@ const PopupErrorMessage = (props:any) => {
                     {
                       messageData?.message
                       &&
-                      messageData?.message 
+                      messageData?.message?.msg
                     }
                 </div>
             }
@@ -38,4 +38,4 @@ const PopupErrorMessage = (props:any) => {
     )
 }
 
-export default PopupErrorMessage;
+export default React.memo(PopupErrorMessage);

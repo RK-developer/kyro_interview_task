@@ -1,7 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 interface GenericResponse {
   status?: string | number,
-  message?: string,
+  message?: {
+    type: string,
+    msg: string
+  },
   errors?: any
 }
 const initialState = {} as GenericResponse;

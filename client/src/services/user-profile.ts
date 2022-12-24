@@ -1,5 +1,5 @@
 import axiosAPi from "axios";
-import {UserSignUpModel, UserSignInModel} from "../models/redux-user";
+import {UserSignUpPayLoad, UserSignInPayLoad} from "../models/redux-user";
 import {MyProfileModel} from "../models/redux-my-profile"
 
 const baseURL = process.env.REACT_APP_API_BASE_URL as string;
@@ -8,22 +8,22 @@ const axios = axiosAPi.create({
 });
 
 (function () {
-    const authToken = localStorage.getItem("authToken");
-    if(!authToken) 
+    const userAuthToken = localStorage.getItem("userAuthToken");
+    if(!userAuthToken) 
         axios.defaults.headers.common.Authorization = null
     else
-        axios.defaults.headers.common.Authorization = `Bearer ${authToken}`
+        axios.defaults.headers.common.Authorization = `Bearer ${userAuthToken}`
 }());
 
 
 
-export const signUp = async(userSignUpState:UserSignUpModel) => {
+export const signUp = async(userSignUpState:UserSignUpPayLoad) => {
     return axios.post (`/user/signup`,{
         ...userSignUpState
     })
 }
 
-export const signIn = async(userSignInState:UserSignInModel) => {
+export const signIn = async(userSignInState:UserSignInPayLoad) => {
     return axios.post (`/user/signin`,{
         ...userSignInState
     })
