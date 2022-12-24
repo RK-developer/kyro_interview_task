@@ -2,7 +2,7 @@ import {useEffect} from "react";
 import {useAppDispatch, useAppSelector} from "../hooks/redux-hooks";
 import {signInAction} from "../store/actions/auth-action"
 import CustomForm from "../components/CustomForm";
-import LoaderHOC from "../components/Loader/Loader"
+import LoaderHOC from "../components/Loader/Loader";
 const Signin = (props: any) => {
     const {setLoading} = props;
     const formValue = {

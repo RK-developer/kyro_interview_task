@@ -1,7 +1,11 @@
+import { useEffect } from "react";
 import CustomForm from "../components/CustomForm";
-
+import LoaderHOC from "../components/Loader/Loader";
+import { useAppDispatch, useAppSelector } from "../hooks/redux-hooks";
+import { signUpAction } from "../store/actions/auth-action";
 
 const Signup = (props: any) => {
+    const { setLoading } = props;
     const formValue = {
         firstName: {
             value: "",
@@ -30,9 +34,16 @@ const Signup = (props: any) => {
             errorMessage: "Password Should not be empty",
         },
     };
-    const signupSubmitHandler = (event:any,finalFormDataValues:any) => {
-        console.log("finalFormDataValues: ", finalFormDataValues);
-    }
+    const dispatch = useAppDispatch();
+    const { isLoading } = useAppSelector((state) => state?.userData);
+    const signupSubmitHandler = (event: any, finalFormDataValues: any) => {
+        dispatch(signUpAction({ ...finalFormDataValues }));
+    };
+
+    useEffect(() => {
+        setLoading(isLoading);
+    }, [isLoading]);
+
     return (
         <CustomForm
             formStateData={formValue}
@@ -45,4 +56,4 @@ const Signup = (props: any) => {
     );
 };
 
-export default Signup;
+export default LoaderHOC(Signup);
