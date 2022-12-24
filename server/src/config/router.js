@@ -17,14 +17,14 @@ router.post("/user/signup",[
     .not()
     .isEmpty(),
     check("email", "Please enter a valid email").isEmail(),
-    check("password", "Please enter a valid password").isLength({
+    check("password", "Please should contain min 6 charactrers").isLength({
         min: 6
     })
 ],userSignUp);
 
 router.post("/user/signin",[
     check("email", "Please enter a valid email").isEmail(),
-    check("password", "please enter a valid password").isLength({
+    check("password", "Please should contain min 6 charactrers").isLength({
         min: 6
     })
 ],userSignIn);

@@ -20,7 +20,9 @@ const userSignUp = async (req, res) => {
         });
         if(user) {
             return res.status(400).json({
-                msg: "User Already Exists"
+                errors:[{
+                    msg: "Email have already taken, please use different one."
+                }]
             })
         }
         const displayName = `${firstName} ${lastName}`;
