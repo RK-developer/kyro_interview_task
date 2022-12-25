@@ -22,7 +22,7 @@ const Signin = (props: any) => {
         },
     };
     const dispatch = useAppDispatch();
-    const {isLoading} = useAppSelector(state => state?.userData);
+    const {isLoading,isLoggedIn} = useAppSelector(state => state?.userData);
     const signinSubmitHandler = (event:any,finalFormDataValues:any) => {
         dispatch(signInAction(
             {...finalFormDataValues}
@@ -33,14 +33,21 @@ const Signin = (props: any) => {
         setLoading(isLoading)
     },[isLoading])
     return (
-        <CustomForm
-            formStateData={formValue}
-            formHeader={{
-                title: "Sign In",
-            }}
-            sx={{ width: "500px", m: "0 auto", height: "calc(100vh - 330px)" }}
-            onSubmit={signinSubmitHandler}
-        />
+        <>
+            {
+                !isLoggedIn
+                &&
+                    <CustomForm
+                    formStateData={formValue}
+                    formHeader={{
+                        title: "SIGN IN",
+                    }}
+                    sx={{ width: "500px", m: "0 auto", height: "calc(100vh - 330px)" }}
+                    onSubmit={signinSubmitHandler}
+                    formStyle={{height: "calc(100vh - 310px)"}}
+                />
+            }
+        </>
     );
 };
 

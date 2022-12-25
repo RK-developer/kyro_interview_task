@@ -1,18 +1,15 @@
-import { /**useAppDispatch,**/ useAppSelector } from "../../hooks/redux-hooks";
-// import {getProfileDetailsByUserId} from "../../store/actions/my-profile";
-import {useEffect} from "react";
-
+import React from "react";
+import { useAppSelector } from "../../hooks/redux-hooks";
 
 const DetailView = () => {
-    const profileData = useAppSelector(state=>state.profileData.myProfileState);
-    useEffect(() => {
-        console.log("profileData: ", profileData);
-    },[profileData])
+    const profileData = useAppSelector(
+        (state) => state.profileData.myProfileState
+    );
     return (
         <>
             <h4>Detail View</h4>
         </>
-    )
-}
+    );
+};
 
-export default DetailView
+export default DetailView;

@@ -1,29 +1,28 @@
-import {UserStateModel} from "../../models/redux-user";
-import {createSlice,PayloadAction} from "@reduxjs/toolkit"
+import { UserStateModel } from "../../models/redux-user";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 const userState: UserStateModel = {
     isLoggedIn: false,
     isLoading: false,
     isRegisterationSuccess: null,
     isLoginSuccess: null,
+};
 
-}
-
-const myAuthSlice=createSlice({
-    name:'userAuth',
-    initialState:userState,
+const myAuthSlice = createSlice({
+    name: "userAuth",
+    initialState: userState,
     reducers: {
-        setUserState(state, action:PayloadAction<UserStateModel>) {
+        setUserState(state, action: PayloadAction<UserStateModel>) {
             return {
                 ...state,
-                ...action.payload
-            }
+                ...action.payload,
+            };
         },
-        setIsLoading(state, action:PayloadAction<UserStateModel>) {
-            state.isLoading = action.payload.isLoading
-        }
-    }
+        setIsLoading(state, action: PayloadAction<UserStateModel>) {
+            state.isLoading = action.payload.isLoading;
+        },
+    },
 });
-export const {reducer, actions} = myAuthSlice;
-export const {setUserState, setIsLoading} = actions;
+export const { reducer, actions } = myAuthSlice;
+export const { setUserState, setIsLoading } = actions;
 export default reducer;

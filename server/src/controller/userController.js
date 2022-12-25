@@ -122,7 +122,20 @@ const userSignIn = async (req, res) => {
     }
 }
 
+const authVerifyController = async (req, res) => {
+    if(!req.user)
+        return res.status(400).json({
+            isAuthCheck: false,
+            message: "Not Authorized, Please login"
+        })
+    return res.status(200).json({
+        isAuthCheck: true,
+        message: "Authentication verified"
+    })
+}
+
 module.exports = {
     userSignUp,
     userSignIn,
+    authVerifyController
 };

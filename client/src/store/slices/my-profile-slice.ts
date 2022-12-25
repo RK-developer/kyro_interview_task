@@ -1,38 +1,41 @@
-import {MyProfileModel, MyProfileImageModel} from "../../models/redux-my-profile";
-import {createSlice,PayloadAction} from "@reduxjs/toolkit"
+import {
+    MyProfileModel,
+    MyProfileImageModel,
+} from "../../models/redux-my-profile";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 const myProfileState: MyProfileModel = {
-    firstName: '',
-    lastName: '',
-    displayName: '',
-    email: '',
+    firstName: "",
+    lastName: "",
+    displayName: "",
+    email: "",
     phoneNumber: null,
     alternatePhoneNumber: null,
     location: null,
-}
+};
 
 const myProfileImageState: MyProfileImageModel = {
     name: null,
     profileId: null,
-    url: null
-}
+    url: null,
+};
 
 const initialMyProfileState = {
     myProfileState,
-    myProfileImageState
-}
+    myProfileImageState,
+};
 
-const myProfileSlice=createSlice({
-    name:'myprofile',
-    initialState:initialMyProfileState,
+const myProfileSlice = createSlice({
+    name: "myprofile",
+    initialState: initialMyProfileState,
     reducers: {
-        setMyProfile(state, action:PayloadAction<MyProfileModel>) {
-            state.myProfileState = action.payload
+        setMyProfile(state, action: PayloadAction<MyProfileModel>) {
+            state.myProfileState = action.payload;
         },
-        setMyProfileImage(state, action:PayloadAction<MyProfileImageModel>) {
-            state.myProfileImageState = action.payload
-        }
-    }
+        setMyProfileImage(state, action: PayloadAction<MyProfileImageModel>) {
+            state.myProfileImageState = action.payload;
+        },
+    },
 });
 
 export default myProfileSlice;

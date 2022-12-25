@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from "react";
+import { useMemo, useRef, useState, Children } from "react";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Grid from "@mui/material/Grid";
@@ -10,10 +10,13 @@ import {
     FormValueForSignup,
     FieldType,
 } from "../models/form-model";
-import React from "react";
-import { isDisabled } from "@testing-library/user-event/dist/utils";
 
 const CustomForm = (props: any) => {
+    const nonValidate: any = [
+        "location",
+        "phoneNumber",
+        "alternatePhoneNumber",
+    ];
     const submitBtnRef = useRef<any>();
     const {
         formStateData = {},
@@ -25,6 +28,7 @@ const CustomForm = (props: any) => {
         submitBtnText = "Sumbit",
         submitBtnStyle = {},
         submitBtnClassName = "",
+        formName,
         sx = {},
     } = props;
     const [formValues, setFormValues] = useState<
@@ -34,8 +38,14 @@ const CustomForm = (props: any) => {
         const { value, name } = event.target;
         const key = name as string;
         let error = false;
-        if (!value) {
+        let errorEmailType = false;
+        const emailIsValidPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!value.trim() && !nonValidate.includes(name)) {
             error = true;
+        }
+        if (name === "email" && !emailIsValidPattern.test(value)) {
+            error = false;
+            errorEmailType = true;
         }
 
         setFormValues(
@@ -48,8 +58,9 @@ const CustomForm = (props: any) => {
                 ...state,
                 [name]: {
                     ...state[key as keyof typeof state],
-                    value,
+                    value: value.trimStart(),
                     error,
+                    errorEmailType,
                 },
             })
         );
@@ -59,11 +70,11 @@ const CustomForm = (props: any) => {
         refAttr: any,
         isDisabled: boolean
     ) => {
-        if(isDisabled) {
+        if (isDisabled) {
             refAttr?.setAttribute("disabled", isDisabled);
             refAttr?.classList.add("Mui-disabled");
         } else {
-            refAttr.removeAttribute("disabled");
+            refAttr?.removeAttribute("disabled");
             refAttr?.classList.remove("Mui-disabled");
         }
     };
@@ -100,7 +111,7 @@ const CustomForm = (props: any) => {
             const inputElement =
                 formValues[formFieldName[i] as keyof typeof formValues];
             if (
-                formFieldName[i] !== "location" &&
+                !nonValidate.includes(formFieldName[i]) &&
                 (inputElement.value === "" ||
                     inputElement.error ||
                     inputElement?.errorEmailType)
@@ -154,42 +165,64 @@ const CustomForm = (props: any) => {
                             {formHeader?.title}
                         </Box>
                     )}
-                    <Grid container spacing={2}>
-                        {Object.keys(formValues).map((fieldName) => {
-                            const fieldNameObj =
-                                formValues[
-                                    fieldName as keyof typeof formValues
-                                ];
-                            return (
-                                <Grid
-                                    item
-                                    xs={formGridColumnType === 1 ? 12 : 6}
-                                    key={`${fieldName}_profile_form`}
-                                >
-                                    <TextField
-                                        label={fieldNameObj.label}
-                                        name={fieldName}
-                                        variant="outlined"
-                                        fullWidth
-                                        required
-                                        error={fieldNameObj.error}
-                                        helperText={
-                                            fieldNameObj.error &&
-                                            fieldNameObj.errorMessage
-                                        }
-                                        size="small"
-                                        value={fieldNameObj.value}
-                                        onChange={onChangeHandler}
-                                    />
-                                </Grid>
-                            );
-                        })}
+                    <Grid
+                        container
+                        spacing={2}
+                        className="custom-form-container"
+                    >
+                        {Children.toArray(
+                            Object.keys(formValues).map((fieldName) => {
+                                const fieldNameObj =
+                                    formValues[
+                                        fieldName as keyof typeof formValues
+                                    ];
+                                const typeIp =
+                                    fieldName === "password"
+                                        ? "password"
+                                        : "text";
+                                return (
+                                    <Grid
+                                        item
+                                        xs={formGridColumnType === 1 ? 12 : 6}
+                                    >
+                                        <TextField
+                                            label={fieldNameObj.label}
+                                            name={fieldName}
+                                            variant="outlined"
+                                            fullWidth
+                                            required={fieldNameObj.error}
+                                            error={
+                                                fieldNameObj.error ||
+                                                (fieldName === "email" &&
+                                                    fieldNameObj.errorEmailType)
+                                            }
+                                            helperText={
+                                                (fieldNameObj.error &&
+                                                    fieldNameObj.errorMessage) ||
+                                                (fieldNameObj.errorEmailType &&
+                                                    fieldNameObj.typeErrorMessage)
+                                            }
+                                            size="small"
+                                            value={fieldNameObj.value || ""}
+                                            onChange={onChangeHandler}
+                                            disabled={
+                                                formName === "profile" &&
+                                                fieldName === "email"
+                                                    ? true
+                                                    : false
+                                            }
+                                            type={typeIp}
+                                        />
+                                    </Grid>
+                                );
+                            })
+                        )}
                     </Grid>
                     <Box ref={submitBtnRef}>
                         <Button
                             type="submit"
-                            variant="outlined"
-                            color="primary"
+                            variant="contained"
+                            color="error"
                             endIcon={<KeyboardArrowRight />}
                             disabled={isRequiredInputFieldsAreValid}
                             style={{ ...submitBtnStyle }}

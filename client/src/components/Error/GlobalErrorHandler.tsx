@@ -2,6 +2,7 @@ import { useAppSelector } from "../../hooks/redux-hooks";
 import PopupErrorMessage from "../Popup/PopupErrorMessage";
 import PopupSuccessMessage from "../Popup/PopupSuccessMessage";
 import { FAILED, SUCCESS } from "../../store/types";
+import React from "react";
 const GlobalErrorhandler = () => {
     const messageData = useAppSelector((state) => state?.messageData);
     return (

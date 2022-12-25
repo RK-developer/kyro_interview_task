@@ -1,7 +1,10 @@
+import { useEffect } from "react";
 import MyProfile from "../components/MyProfile";
 import ViewProfilePic from "../components/ProfilePicture/ViewProfilePic";
-import Grid from "@mui/material/Grid/";
+import Grid from "@mui/material/Grid";
 import { styled } from "@mui/material/styles";
+import { useAppDispatch } from "../hooks/redux-hooks";
+import {getProfileDetailsByUserId} from "../store/actions/my-profile-action"
 const ProfileRootGrid = styled(Grid)({
     height: "100%",
 });

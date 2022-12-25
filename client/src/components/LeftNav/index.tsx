@@ -1,15 +1,14 @@
 import MainMenu from "./MainMenu";
-// import LogOut from "./Logout";
+import LogOut from "./Logout";
 import NavHeader from "./NavHeader";
 import Drawer from "@mui/material/Drawer";
 import Divider from "@mui/material/Divider";
+import React from "react";
 
 const LeftNav = (props: any) => {
     const { drawerWidth } = props;
     return (
         <div>
-            {/*
-            <LogOut/> */}
             <Drawer
                 sx={{
                     width: drawerWidth,
@@ -24,7 +23,7 @@ const LeftNav = (props: any) => {
             >
                 <NavHeader />
                 <MainMenu />
-                <Divider />
+                <LogOut />
             </Drawer>
         </div>
     );

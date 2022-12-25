@@ -3,6 +3,8 @@ import CustomForm from "../components/CustomForm";
 import LoaderHOC from "../components/Loader/Loader";
 import { useAppDispatch, useAppSelector } from "../hooks/redux-hooks";
 import { signUpAction } from "../store/actions/auth-action";
+import { useNavigate } from "react-router-dom";
+import { setUserState } from "../store/slices/auth-slice";
 
 const Signup = (props: any) => {
     const { setLoading } = props;
@@ -35,7 +37,10 @@ const Signup = (props: any) => {
         },
     };
     const dispatch = useAppDispatch();
-    const { isLoading } = useAppSelector((state) => state?.userData);
+    const navigate = useNavigate();
+    const { isLoading, isRegisterationSuccess } = useAppSelector(
+        (state) => state?.userData
+    );
     const signupSubmitHandler = (event: any, finalFormDataValues: any) => {
         dispatch(signUpAction({ ...finalFormDataValues }));
     };
@@ -44,11 +49,22 @@ const Signup = (props: any) => {
         setLoading(isLoading);
     }, [isLoading]);
 
+    useEffect(() => {
+        if (isRegisterationSuccess) {
+            dispatch(
+                setUserState({
+                    isRegisterationSuccess: false,
+                })
+            );
+            navigate("/login");
+        }
+    }, [isRegisterationSuccess]);
+
     return (
         <CustomForm
             formStateData={formValue}
             formHeader={{
-                title: "Sign Up",
+                title: "SIGN UP",
             }}
             sx={{ width: "500px", m: "0 auto" }}
             onSubmit={signupSubmitHandler}

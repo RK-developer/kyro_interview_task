@@ -4,7 +4,6 @@
  * If Type is not defined then return initial props
  */
  export const flexStyle = ({flexType=null}) => {
-    console.log("flexType:", flexType);
     const initialProps = {
         display: 'flex',
         flexDirection: 'row',

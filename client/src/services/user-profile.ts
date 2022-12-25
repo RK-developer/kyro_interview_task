@@ -1,47 +1,50 @@
 import axiosAPi from "axios";
-import {UserSignUpPayLoad, UserSignInPayLoad} from "../models/redux-user";
-import {MyProfileModel} from "../models/redux-my-profile"
+import { UserSignUpPayLoad, UserSignInPayLoad } from "../models/redux-user";
+import { MyProfileModel } from "../models/redux-my-profile";
+import { BASE_API_URL } from "../utils/config";
 
-const baseURL = process.env.REACT_APP_API_BASE_URL as string;
+const baseURL = BASE_API_URL();
 const axios = axiosAPi.create({
-    baseURL: `${baseURL}`
+    baseURL: `${baseURL}api/v1`,
 });
 
-(function () {
+axios.interceptors.request.use(function (config: any) {
     const userAuthToken = localStorage.getItem("userAuthToken");
-    if(!userAuthToken) 
-        axios.defaults.headers.common.Authorization = null
-    else
-        axios.defaults.headers.common.Authorization = `Bearer ${userAuthToken}`
-}());
+    config.headers.token = userAuthToken;
+    return config;
+});
 
+export const signUp = async (userSignUpState: UserSignUpPayLoad) => {
+    return axios.post(`/user/signup`, {
+        ...userSignUpState,
+    });
+};
 
+export const signIn = async (userSignInState: UserSignInPayLoad) => {
+    return axios.post(`/user/signin`, {
+        ...userSignInState,
+    });
+};
 
-export const signUp = async(userSignUpState:UserSignUpPayLoad) => {
-    return axios.post (`/user/signup`,{
-        ...userSignUpState
-    })
-}
+export const updateProfileDetails = async (myProfileState: MyProfileModel) => {
+    return axios.put(`/user/profile`, {
+        ...myProfileState,
+    });
+};
 
-export const signIn = async(userSignInState:UserSignInPayLoad) => {
-    return axios.post (`/user/signin`,{
-        ...userSignInState
-    })
-}
+export const getProfileDetails = async () => {
+    return axios.get(`/user/profile`);
+};
 
-export const updateProfileDetails =async (myProfileState:MyProfileModel) => {
-    return axios.put (`/user/profile`)
-}
-
-export const getProfileDetails =async () => {
-    return axios.get (`/user/profile`)
-}
-
-export const getProfileImage =async () => {
+export const getProfileImage = async () => {
     const result = {
-        name: 'image 1',
-        profileId: '1',
-        url: null
-    }
+        name: "image 1",
+        profileId: "1",
+        url: null,
+    };
     return result;
-}
+};
+
+export const userAuthVerify = async () => {
+    return axios.get("user/auth-verify");
+};

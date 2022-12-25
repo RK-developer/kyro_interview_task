@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const { check} = require("express-validator");
 const authCheck = require("../middleware/auth");
-const {userSignUp, userSignIn} = require("../controller/userController");
+const {userSignUp, userSignIn, authVerifyController} = require("../controller/userController");
 const {getProfileByUserId, updateProfileByUserId} = require("../controller/profileController");
 
 /**
@@ -37,5 +37,7 @@ router.put('/user/profile',[
     check("email", "Please enter a valid email").isEmail(),
     check("displayName","Please enter a valid Display Name").not().isEmpty()
 ],authCheck,updateProfileByUserId);
+
+router.get('/user/auth-verify',authCheck,authVerifyController);
 
 module.exports = router;

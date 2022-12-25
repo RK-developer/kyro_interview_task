@@ -11,10 +11,17 @@ import {
     rightCol,
 } from "../../utils/styled/mainTopHeader";
 
+import { useAppSelector } from "../../hooks/redux-hooks";
+import { getCurrentDateWithDefineFormat } from "../../utils/common";
+import React from "react";
+
 const AddStyled = styled(Add)(addStyled());
 const RightCol = styled("div")(rightCol());
 const MainTopHeader = (props: any) => {
     const { drawerWidth } = props;
+    const { myProfileState: profileData } = useAppSelector(
+        (state) => state.profileData
+    );
     return (
         <>
             <AppBar
@@ -33,8 +40,8 @@ const MainTopHeader = (props: any) => {
                         justifyContent: "center",
                     }}
                 >
-                    <Typography sx={{ fontSize: "15px" }}>
-                        Good Morning, Adam
+                    <Typography sx={{ fontSize: "15px", fontWeight: 600 }}>
+                        Good Morning, {profileData.displayName}
                     </Typography>
                     <Typography
                         variant="body2"
@@ -42,7 +49,7 @@ const MainTopHeader = (props: any) => {
                         gutterBottom
                         sx={{ fontSize: "13px", color: "#858585" }}
                     >
-                        April 28, 2022
+                        {getCurrentDateWithDefineFormat()}
                     </Typography>
                 </Box>
                 <RightCol>
@@ -51,6 +58,7 @@ const MainTopHeader = (props: any) => {
                             variant="contained"
                             startIcon={<AddStyled />}
                             sx={{ fontSize: "10px" }}
+                            color="error"
                         >
                             ADD PROJECT
                         </Button>
@@ -67,7 +75,7 @@ const MainTopHeader = (props: any) => {
                         </Avatar>
                         <Box>
                             <Typography variant="body2" display="block">
-                                Adam
+                                {profileData.displayName}
                             </Typography>
                             <Typography
                                 variant="body2"

@@ -1,13 +1,13 @@
-import {UserBaseModel} from "./redux-user";
+import { UserBaseModel } from "./redux-user";
 
-export interface MyProfileModel extends Omit<UserBaseModel, 'password'> {}
+export interface MyProfileModel extends Omit<UserBaseModel, "password"> {}
 
 export interface userToken {
-    token: string,
+    token: string;
 }
 
 export interface MyProfileImageModel {
-    name: string | null | undefined,
-    profileId: string | null | undefined,
-    url: string | null | undefined
+    name: string | null | undefined;
+    profileId: string | null | undefined;
+    url: string | null | undefined;
 }

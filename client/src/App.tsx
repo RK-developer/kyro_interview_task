@@ -20,8 +20,6 @@ const RootContainer = styled(Box)({
     height: "calc(100vh - 64px)",
 });
 const LeftNavGrid = styled(LeftNav)({
-    //position: 'fixed',
-    //width: '240px',
     paddingRight: "20px",
     "> div": {
         ...commonStyleOfGrid,
@@ -60,7 +58,7 @@ function App(props: any) {
                         pt: "64px",
                     }}
                 >
-                    <MainSectionGrid />
+                    <MainSectionGrid pathName={pathName} />
                 </Box>
             </RootContainer>
         </div>
